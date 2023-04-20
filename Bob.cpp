@@ -1,24 +1,24 @@
 #include "bob.h"
 #include "Engine.cpp"
 #include "Engine.h"
-//конструктор 
+//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ 
 Bob::Bob()
 {
-    // Вписываем в переменную скорость Боба
+    // Р’РїРёСЃС‹РІР°РµРј РІ РїРµСЂРµРјРµРЅРЅСѓСЋ СЃРєРѕСЂРѕСЃС‚СЊ Р‘РѕР±Р°
     m_Speed = 555;
 
-    /*комбинация этих двух строчек позволяет загрузить текстуру
-    из файла и установить ёё на спрайте,чтобы отобразить на экране*/
+    /*РєРѕРјР±РёРЅР°С†РёСЏ СЌС‚РёС… РґРІСѓС… СЃС‚СЂРѕС‡РµРє РїРѕР·РІРѕР»СЏРµС‚ Р·Р°РіСЂСѓР·РёС‚СЊ С‚РµРєСЃС‚СѓСЂСѓ
+    РёР· С„Р°Р№Р»Р° Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ С‘С‘ РЅР° СЃРїСЂР°Р№С‚Рµ,С‡С‚РѕР±С‹ РѕС‚РѕР±СЂР°Р·РёС‚СЊ РЅР° СЌРєСЂР°РЅРµ*/
     m_Texture.loadFromFile("bobik.png");
     m_Sprite.setTexture(m_Texture);
 
-    // Устанавливаем начальную позицию Боба в пикселях
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅР°С‡Р°Р»СЊРЅСѓСЋ РїРѕР·РёС†РёСЋ Р‘РѕР±Р° РІ РїРёРєСЃРµР»СЏС…
     m_Position.x = 500;
     m_Position.y = 500;
 
 }
 
-// Делаем приватный спрайт доступным для функции draw()
+// Р”РµР»Р°РµРј РїСЂРёРІР°С‚РЅС‹Р№ СЃРїСЂР°Р№С‚ РґРѕСЃС‚СѓРїРЅС‹Рј РґР»СЏ С„СѓРЅРєС†РёРё draw()
 Sprite Bob::getSprite()
 {
     return m_Sprite;
@@ -62,57 +62,32 @@ void Bob::stopUp() {
     m_UpPressed = false;
 }
 
-// Двигаем Боба на основании пользовательского ввода в этом кадре,
-// прошедшего времени и скорости
-/*elapsedTime--это переменная,которая содержит время,
-прошедшее с предыдущего кадра до текущего.*/
-void Bob::update(float dtAsSeconds)
+// Р”РІРёРіР°РµРј Р‘РѕР±Р° РЅР° РѕСЃРЅРѕРІР°РЅРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ РІРІРѕРґР° РІ СЌС‚РѕРј РєР°РґСЂРµ,
+// РїСЂРѕС€РµРґС€РµРіРѕ РІСЂРµРјРµРЅРё Рё СЃРєРѕСЂРѕСЃС‚Рё
+/*elapsedTime--СЌС‚Рѕ РїРµСЂРµРјРµРЅРЅР°СЏ,РєРѕС‚РѕСЂР°СЏ СЃРѕРґРµСЂР¶РёС‚ РІСЂРµРјСЏ,
+РїСЂРѕС€РµРґС€РµРµ СЃ РїСЂРµРґС‹РґСѓС‰РµРіРѕ РєР°РґСЂР° РґРѕ С‚РµРєСѓС‰РµРіРѕ.*/
+void Bob::update(float elapsedTime)
 {
-    const float speed = 200.f;
-
-    // Сохраняем позицию Боба до обновления
-    sf::Vector2f oldPos = m_Sprite.getPosition();
-
-    // Перемещаем Боба в зависимости от нажатых клавиш
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    if (m_RightPressed)
     {
-        m_Sprite.move(-speed * dtAsSeconds, 0.f);
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        m_Sprite.move(speed * dtAsSeconds, 0.f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        m_Sprite.move(0.f, -speed * dtAsSeconds);
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        m_Sprite.move(0.f, speed * dtAsSeconds);
+        m_Position.x += m_Speed * elapsedTime;
     }
 
-    // Получаем границы фона
-    sf::FloatRect backgroundBounds;
+    if (m_LeftPressed)
+    {
+        m_Position.x -= m_Speed * elapsedTime;
+    }
 
+    if (m_DownPressed)
+    {
+        m_Position.y += m_Speed * elapsedTime;
+    }
 
-    // Получаем границы спрайта Боба
-    sf::FloatRect bobBounds = m_Sprite.getGlobalBounds();
+    if (m_UpPressed)
+    {
+        m_Position.y -= m_Speed * elapsedTime;
+    }
+    // РўРµРїРµСЂСЊ СЃРґРІРёРіР°РµРј СЃРїСЂР°Р№С‚ РЅР° РЅРѕРІСѓСЋ РїРѕР·РёС†РёСЋ
+    m_Sprite.setPosition(m_Position);
 
-    // Проверяем, не выходит ли Боб за пределы фона
-    if (bobBounds.left < backgroundBounds.left)
-    {
-        m_Sprite.setPosition(backgroundBounds.left, oldPos.y);
-    }
-    else if (bobBounds.left + bobBounds.width > backgroundBounds.left + backgroundBounds.width)
-    {
-        m_Sprite.setPosition(backgroundBounds.left + backgroundBounds.width - bobBounds.width, oldPos.y);
-    }
-    if (bobBounds.top < backgroundBounds.top)
-    {
-        m_Sprite.setPosition(oldPos.x, backgroundBounds.top);
-    }
-    else if (bobBounds.top + bobBounds.height > backgroundBounds.top + backgroundBounds.height)
-    {
-        m_Sprite.setPosition(oldPos.x, backgroundBounds.top + backgroundBounds.height - bobBounds.height);
-    }
 }
