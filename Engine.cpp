@@ -2,7 +2,7 @@
 
 Engine::Engine()
 {
-   // Получаем разрешение экрана, создаем окно SFML и View
+   // РїРѕР»СѓС‡Р°РµРј СЂР°Р·СЂРµС€РµРЅРёРµ СЌРєСЂР°РЅР°, СЃРѕР·РґР°РµРј РѕРєРЅРѕ Рё SFML Рё view
     Vector2f resolution;
     resolution.x = VideoMode::getDesktopMode().width;
     resolution.y = VideoMode::getDesktopMode().height;
@@ -11,25 +11,23 @@ Engine::Engine()
         "Simple Game Engine",
         Style::Fullscreen);
 
-    // Загружаем фон в текстуру
+    // Р—Р°РіСЂСѓР¶Р°РµРј С„РѕРЅ РІ С‚РµРєСЃС‚СѓСЂСѓ
 
     m_BackgroundTexture.loadFromFile("background1.jpg");
 
-    // Связываем спрайт и текстуру
+    // РЎРІСЏР·С‹РІР°РµРј СЃРїСЂР°Р№С‚ Рё С‚РµРєСЃС‚СѓСЂ
     m_BackgroundSprite.setTexture(m_BackgroundTexture);
-    // граница фона
-    FloatRect backgroundBounds = m_BackgroundSprite.getGlobalBounds();
 
 }
 
 void Engine::start()
 {
-    // Расчет времени
+     // Р Р°СЃС‡РµС‚ РІСЂРµРјРµРЅРё
     Clock clock;
 
     while (m_Window.isOpen())
     {
-        // Перезапускаем таймер и записываем отмеренное время в dt
+        // РџРµСЂРµР·Р°РїСѓСЃРєР°РµРј С‚Р°Р№РјРµСЂ Рё Р·Р°РїРёСЃС‹РІР°РµРј РѕС‚РјРµСЂРµРЅРЅРѕРµ РІСЂРµРјСЏ РІ dt
         Time dt = clock.restart();
 
         float dtAsSeconds = dt.asSeconds();
@@ -42,12 +40,12 @@ void Engine::start()
 
 int main()
 {
-    // Объявляем экземпляр класса Engine
+    // РћР±СЉСЏРІР»СЏРµРј СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР° Engine
     Engine engine;
 
-    // Вызываем функцию start
+    // Р’С‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёСЋ start
     engine.start();
 
-    // Останавливаем программу программу, когда движок остановлен
+    // РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїСЂРѕРіСЂР°РјРјСѓ РїСЂРѕРіСЂР°РјРјСѓ, РєРѕРіРґР° РґРІРёР¶РѕРє РѕСЃС‚Р°РЅРѕРІР»РµРЅ
     return 0;
 }
